@@ -83,7 +83,7 @@ def train_and_test(args, device, model, test_loader, train_loader):
 
         accuracy = test(args, model, device, test_loader)
     if (args.save_model):
-        torch.save(model.state_dict(), "mnist_cnn.pt")
+        torch.save(model.state_dict(), "mnist_cnn_3.txt")
 
     return accuracy
 

@@ -151,7 +151,24 @@ class Model_4(nn.Module):
         # ======================================================================
         # Two convolutional layers + two fully connected layers, with ReLU.
         
+        self.features1 = nn.Sequential(
+            nn.Conv2d(1, 40, 5, 1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, stride=1),
+            nn.Conv2d(40, 40, 5, 1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, stride=1)
+        )
 
+        self.features2 = nn.Sequential(
+            nn.MSELoss(size_average=False, reduce=False),
+            nn.Linear(40*18*18, hidden_size),
+            nn.ReLU(),
+            nn.MSELoss(size_average=False, reduce=False),
+            nn.Linear(hidden_size, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, 10)
+        )
 
         # Uncomment the following stmt with appropriate input dimensions once model's implementation is done.
         # self.output_layer = nn.Linear(in_dim, 10)
@@ -160,12 +177,15 @@ class Model_4(nn.Module):
         # ======================================================================
         # Forward input x through your model to get features
 
-
+        x = self.features1(x)
+        x = x.view(-1, 40*18*18)
+        print('hifdsafads')
+        return self.features2(x)
 
         # Uncomment the following return stmt once method implementation is done.
         # return  features
         # Delete line return NotImplementedError() once method is implemented.
-        return NotImplementedError()
+        # return NotImplementedError()
 
 class Model_5(nn.Module):
     def __init__(self, hidden_size):

@@ -1,0 +1,21 @@
+ Volume in drive C has no label.
+ Volume Serial Number is CC5D-FAE3
+
+ Directory of C:\Users\vadManuel\Desktop\School\temp
+
+04/05/2019  06:50 PM    <DIR>          .
+04/05/2019  06:50 PM    <DIR>          ..
+04/05/2019  01:20 PM    <DIR>          .vscode
+04/05/2019  06:13 PM             8,349 CNN.py
+04/05/2019  03:49 PM             9,286 main.py
+04/05/2019  06:44 PM         5,354,523 mnist_cnn.pt
+04/05/2019  06:52 PM                 0 mod2.txt
+04/04/2019  11:15 PM             4,582 pa2_1.py
+04/04/2019  11:15 PM             5,543 pa2_2.py
+04/04/2019  11:15 PM             5,442 pa2_3.py
+04/04/2019  11:15 PM             5,019 pa2_4.py
+04/04/2019  11:15 PM             5,456 pa2_5.py
+04/04/2019  11:15 PM             6,038 pa2_6.py
+04/05/2019  06:13 PM    <DIR>          __pycache__
+              10 File(s)      5,404,238 bytes
+               4 Dir(s)  134,990,139,392 bytes free
