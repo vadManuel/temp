@@ -120,6 +120,7 @@ def main():
 
     #check if we can use GPU for training.
     use_cuda = not args.no_cuda and torch.cuda.is_available()
+    print('cuda' if use_cuda else 'cpu')
 
     torch.manual_seed(args.seed)
 
@@ -151,6 +152,8 @@ def main():
     #  Expected accuracy >= 97.80%
     if args.mode == 1:
         model = Net(1, args).to(device)
+
+        # print(test_loader)
 
         accuracy = train_and_test(args, device, model, test_loader, train_loader)
 

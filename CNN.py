@@ -9,9 +9,14 @@ class Model_1(nn.Module):
         super().__init__()
         # ======================================================================
         # One fully connected layer.
-
-        self.fc1 = nn.Linear(input_dim, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, 10)
+        self.features = nn.Sequential(
+            nn.Linear(input_dim, hidden_size),
+            nn.Sigmoid(),
+            nn.Linear(hidden_size, 10)
+        )
+        # self.fc1 = nn.Linear(input_dim, hidden_size)
+        # self.fc2 = nn.Linear(hidden_size, 10)
+        # self.sig = nn.Sigmoid()
 
         # Uncomment the following stmt with appropriate input dimensions once model's implementation is done.
         # self.output_layer = nn.Linear(hidden_size, 10)
@@ -20,14 +25,17 @@ class Model_1(nn.Module):
         # ======================================================================
         # Forward input x through your model to get features
         
-        x = F.sigmoid(self.fc1(x))
-        x = self.fc2(x)
-        return F.log_softmax(x, dim=1)
+        # x = self.sig(self.fc1(x))
+        # x = self.fc2(x)
+        # return F.log_softmax(x, dim=1)
+
+        return self.features(x)
 
         # Uncomment the following return stmt once method implementation is done.
         # return  features
         # Delete line return NotImplementedError() once method is implemented.
         # return NotImplementedError()
+
 
 class Model_2(nn.Module):
     def __init__(self, hidden_size):
@@ -35,11 +43,40 @@ class Model_2(nn.Module):
         # ======================================================================
         # Two convolutional layers + one fully connnected layer.
         
-        self.conv1 = nn.Conv2d(1, 40, 5, 1)
-        self.conv2 = nn.Conv2d(40, 40, 5, 1)
-        self.fc1 = nn.Linear(8*8*40, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, 10)
+        # self.maxp = nn.MaxPool2d(2, stride=1)
+        # self.sig = nn.Sigmoid()
+        # self.conv1 = nn.Conv2d(1, 40, 5, 1)
+        # self.conv2 = nn.Conv2d(40, 40, 5, 1)
+        # self.fc1 = nn.Linear(8*8*40, hidden_size)
+        # self.fc2 = nn.Linear(hidden_size, 10)
 
+        # self.conv1 = nn.Conv2d(1, 40, 5, 1)       # 10*rows*cols => 40*rows*cols
+        # self.sig = nn.Sigmoid()
+        # self.maxp = nn.MaxPool2d(2, stride=1)     # 40*rows*cols => 40*rows*cols/4
+        # self.conv2 = nn.Conv2d(40, 40, 5, 1)        # 40*rows*cols/4
+        # nn.Sigmoid(),
+        # nn.MaxPool2d(2, stride=1),      # 40*rows*cols/16
+
+        
+        # self.fc1 = nn.Linear(40*18*18, hidden_size)   # 40*rows*cols/16
+        # nn.Sigmoid(),
+        # self.fc2 = nn.Linear(hidden_size, 10)
+
+        self.features1 = nn.Sequential(
+            nn.Conv2d(1, 40, 5, 1),
+            nn.Sigmoid(),
+            nn.MaxPool2d(2, stride=1),
+            nn.Conv2d(40, 40, 5, 1),
+            nn.Sigmoid(),
+            nn.MaxPool2d(2, stride=1)
+        )
+
+        self.features2 = nn.Sequential(
+            nn.Linear(40*18*18, hidden_size),
+            nn.Sigmoid(),
+            nn.Linear(hidden_size, 10)
+        )
+        
         # Uncomment the following stmt with appropriate input dimensions once model's implementation is done.
         # self.output_layer = nn.Linear(in_dim, 10)
 
@@ -47,15 +84,28 @@ class Model_2(nn.Module):
         # ======================================================================
         # Forward input x through your model to get features
 
-        x = F.sigmoid(self.conv1(x))
-        x = F.max_pool2d(x, 2, 2)
-        x = F.sigmoid(self.conv2(x))
-        x = F.max_pool2d(x, 2, 2)
+        # x = self.sig(self.conv1(x))
+        # x = self.maxp(x)
+        # x = self.sig(self.conv2(x))
+        # x = self.maxp(x)
+        # x = x.view(-1, 40*18*18)
+        # x = self.sig(self.fc1(x))
+        # return self.fc2(x)
+
+        x = self.features1(x)
+        x = x.view(-1, 40*18*18)
+        return self.features2(x)
+
+        # print(np.shape(x))
+        # x = self.seq1(x)
+        # print(np.shape(x))
+        # x = x.view(-1, 40*7*7)
+        # return self.seq2(x)
 
         # Uncomment the following return stmt once method implementation is done.
         # return  features
         # Delete line return NotImplementedError() once method is implemented.
-        return NotImplementedError()
+        # return NotImplementedError()
 
 
 class Model_3(nn.Module):
@@ -63,8 +113,21 @@ class Model_3(nn.Module):
         super().__init__()
         # ======================================================================
         # Two convolutional layers + one fully connected layer, with ReLU.
-        
 
+        self.features1 = nn.Sequential(
+            nn.Conv2d(1, 40, 5, 1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, stride=1),
+            nn.Conv2d(40, 40, 5, 1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, stride=1)
+        )
+
+        self.features2 = nn.Sequential(
+            nn.Linear(40*18*18, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, 10)
+        )
 
         # Uncomment the following stmt with appropriate input dimensions once model's implementation is done.
         # self.output_layer = nn.Linear(in_dim, 10)
@@ -73,12 +136,14 @@ class Model_3(nn.Module):
         # ======================================================================
         # Forward input x through your model to get features
         
-
+        x = self.features1(x)
+        x = x.view(-1, 40*18*18)
+        return self.features2(x)
 
         # Uncomment the following return stmt once method implementation is done.
         # return  features
         # Delete line return NotImplementedError() once method is implemented.
-        return NotImplementedError()
+        # return NotImplementedError()
 
 class Model_4(nn.Module):
     def __init__(self, hidden_size):
@@ -162,9 +227,10 @@ class Net(nn.Module):
         # ======================================================================
         # Define softmax layer, use the features.
         
+        soft = nn.LogSoftmax(dim=1)
 
 
         # Remove NotImplementedError and assign calculated value to logits after code implementation.
-        logits = NotImplementedError
+        logits = soft(x)
         return logits
 
