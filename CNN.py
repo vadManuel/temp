@@ -147,7 +147,7 @@ class Model_3(nn.Module):
 
 class Model_4(nn.Module):
     def __init__(self, hidden_size):
-        super(Model_4, self).__init__()
+        super().__init__()
         # ======================================================================
         # Two convolutional layers + two fully connected layers, with ReLU.
         
@@ -201,6 +201,20 @@ class Model_5(nn.Module):
         # Two convolutional layers + two fully connected layers, with ReLU.
         # and  + Dropout.
         
+        self.features1 = nn.Sequential(
+            nn.Conv2d(1, 40, 5, 1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, stride=1),
+            nn.Conv2d(40, 40, 5, 1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, stride=1)
+        )
+
+        self.drop = nn.Dropout()
+        self.relu = nn.ReLU()
+        self.fc1 = nn.Linear(40*18*18, hidden_size)
+        self.fc2 = nn.Linear(hidden_size, hidden_size)
+        self.fc3 = nn.Linear(hidden_size, 10)
 
 
         # Uncomment the following stmt with appropriate input dimensions once model's implementation is done.
@@ -210,7 +224,14 @@ class Model_5(nn.Module):
         # ======================================================================
         # Forward input x through your model to get features
         
-
+        x = self.features1(x)
+        x = x.view(-1, 40*18*18)
+        x = self.relu(self.fc1(x))
+        x = self.drop(x)
+        x = self.relu(self.fc2(x))
+        x = self.drop(x)
+        
+        return self.fc3(x)
 
         # Uncomment the following return stmt once method implementation is done.
         # return  features
@@ -220,7 +241,7 @@ class Model_5(nn.Module):
 
 class Net(nn.Module):
     def __init__(self, mode, args):
-        super(Net, self).__init__()
+        super().__init__()
         self.mode = mode
         self.hidden_size = args.hidden_size
 
