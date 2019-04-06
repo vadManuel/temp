@@ -7,6 +7,7 @@ from torch.nn import functional as F
 from torchvision import datasets, transforms
 
 from CNN import Net
+import CNN
 
 
 #code to train the model for given epoch
@@ -70,7 +71,14 @@ def train_and_test(args, device, model, test_loader, train_loader):
     # remove following two lines for NotImplementedError after implementation of all models
     # if len(list(model.parameters())) == 0:
     #     return NotImplementedError
-    optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
+
+    if args.weight_decay == 0:
+        optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
+    else:
+        for mod in model.modules():
+            if isinstance(mod, torch.nn.Conv2d or torch.nn.ReLU or torch.nn.MaxPool2d):
+                mod.weight_decay = 0
+        optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
 
     for epoch in range(1, args.epochs + 1):
         # in your training loop:

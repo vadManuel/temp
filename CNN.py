@@ -147,7 +147,7 @@ class Model_3(nn.Module):
 
 class Model_4(nn.Module):
     def __init__(self, hidden_size):
-        super().__init__()
+        super(Model_4, self).__init__()
         # ======================================================================
         # Two convolutional layers + two fully connected layers, with ReLU.
         
@@ -160,15 +160,20 @@ class Model_4(nn.Module):
             nn.MaxPool2d(2, stride=1)
         )
 
-        self.features2 = nn.Sequential(
-            nn.MSELoss(size_average=False, reduce=False),
-            nn.Linear(40*18*18, hidden_size),
-            nn.ReLU(),
-            nn.MSELoss(size_average=False, reduce=False),
-            nn.Linear(hidden_size, hidden_size),
-            nn.ReLU(),
-            nn.Linear(hidden_size, 10)
-        )
+        self.relu = nn.ReLU()
+        self.fc1 = nn.Linear(40*18*18, hidden_size)
+        self.fc2 = nn.Linear(hidden_size, hidden_size)
+        self.fc3 = nn.Linear(hidden_size, 10)
+
+        # self.features2 = nn.Sequential(
+        #     nn.MSELoss(),
+        #     nn.Linear(40*18*18, hidden_size),
+        #     nn.ReLU(),
+        #     nn.MSELoss(),
+        #     nn.Linear(hidden_size, hidden_size),
+        #     nn.ReLU(),
+        #     nn.Linear(hidden_size, 10)
+        # )
 
         # Uncomment the following stmt with appropriate input dimensions once model's implementation is done.
         # self.output_layer = nn.Linear(in_dim, 10)
@@ -179,8 +184,10 @@ class Model_4(nn.Module):
 
         x = self.features1(x)
         x = x.view(-1, 40*18*18)
-        print('hifdsafads')
-        return self.features2(x)
+        x = self.relu(self.fc1(x))
+        x = self.relu(self.fc2(x))
+        
+        return self.fc3(x)
 
         # Uncomment the following return stmt once method implementation is done.
         # return  features
@@ -213,9 +220,10 @@ class Model_5(nn.Module):
 
 class Net(nn.Module):
     def __init__(self, mode, args):
-        super().__init__()
+        super(Net, self).__init__()
         self.mode = mode
-        self.hidden_size= args.hidden_size
+        self.hidden_size = args.hidden_size
+
         # model 1: base line
         if mode == 1:
             in_dim = 28*28 # input image size is 28x28
@@ -228,7 +236,7 @@ class Net(nn.Module):
         # model 3: replace sigmoid with relu
         if mode == 3:
             self.model = Model_3(self.hidden_size)
-
+ 
         # model 4: add one extra fully connected layer
         if mode == 4:
             self.model = Model_4(self.hidden_size)
