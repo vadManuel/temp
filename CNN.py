@@ -241,13 +241,14 @@ class Model_5(nn.Module):
 
 class Net(nn.Module):
     def __init__(self, mode, args):
-        super().__init__()
+        super(Net, self).__init__()
         self.mode = mode
         self.hidden_size = args.hidden_size
+        self.soft = nn.Softmax(dim=1)
 
         # model 1: base line
         if mode == 1:
-            in_dim = 28*28 # input image size is 28x28
+            in_dim = 28*28  # input image size is 28x28
             self.model = Model_1(in_dim, self.hidden_size)
 
         # model 2: use two convolutional layer
@@ -257,29 +258,29 @@ class Net(nn.Module):
         # model 3: replace sigmoid with relu
         if mode == 3:
             self.model = Model_3(self.hidden_size)
- 
+
         # model 4: add one extra fully connected layer
         if mode == 4:
             self.model = Model_4(self.hidden_size)
+            self.soft = nn.LogSoftmax(dim=1)
 
         # model 5: utilize dropout
         if mode == 5:
             self.model = Model_5(self.hidden_size)
-
+            self.soft = nn.LogSoftmax(dim=1)
 
     def forward(self, x):
         if self.mode == 1:
-            x = x.view(-1, 28* 28)
+            x = x.view(-1, 28 * 28)
             x = self.model(x)
         if self.mode in [2, 3, 4, 5]:
             x = self.model(x)
+
         # ======================================================================
         # Define softmax layer, use the features.
-        
-        soft = nn.Softmax(dim=1)
 
-        logits = soft(x)
+        logits = self.soft(x)
         return logits
-        
+
         # Remove NotImplementedError and assign calculated value to logits after code implementation.
 
