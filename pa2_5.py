@@ -142,7 +142,7 @@ def optical_flow(before, after, window_size=5, sigma=1):
     print(np.shape(image_x))
     return after_color
 
-from luc_kan1 import optical_flow as opt_flow
+# from luc_kan1 import optical_flow as opt_flow
 
 def main():
     '''
@@ -153,7 +153,7 @@ def main():
 
     cv2.imshow('window 1', out1)
     # cv2.imshow('window 2', out2)
-    cv2.imshow('lucas kanade', opt_flow('basketball1.png', 'basketball2.png'))
+    # cv2.imshow('lucas kanade', opt_flow('basketball1.png', 'basketball2.png'))
 
     while True:
         k = cv2.waitKey(30) & 0xff

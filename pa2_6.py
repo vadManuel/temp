@@ -2,16 +2,7 @@
 Author: Manuel Vasquez
 Date:   03/19/2019
 
-
-Index:
-1. Optical Flow
-    a. Lucas-Kanade Optical Flow Estimation
-    b.
-
-
-
-
-PIL, Matplotlib, Numpy, Scipy, LibSVM, OpenCV, VLFeat, python-graph
+Python 3.6.5 64-bit (Anaconda3)
 '''
 
 

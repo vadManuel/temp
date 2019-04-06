@@ -91,7 +91,16 @@ def train_and_test(args, device, model, test_loader, train_loader):
 
         accuracy = test(args, model, device, test_loader)
     if (args.save_model):
-        torch.save(model.state_dict(), "mnist_cnn_3.txt")
+        if args.mode == 1:
+            torch.save(model.state_dict(), "mnist_cnn_1.txt")
+        elif args.mode == 2:
+            torch.save(model.state_dict(), "mnist_cnn_2.txt")
+        elif args.mode == 3:
+            torch.save(model.state_dict(), "mnist_cnn_3.txt")
+        elif args.mode == 4:
+            torch.save(model.state_dict(), "mnist_cnn_4.txt")
+        elif args.mode == 5:
+            torch.save(model.state_dict(), "mnist_cnn_5.txt")
 
     return accuracy
 
@@ -128,14 +137,14 @@ def main():
 
     #check if we can use GPU for training.
     use_cuda = not args.no_cuda and torch.cuda.is_available()
-    print('cuda' if use_cuda else 'cpu')
 
     torch.manual_seed(args.seed)
 
     device = torch.device('cuda' if use_cuda else 'cpu')
+    print(device)
 
     #may increase number of workers to speed up the dataloading.
-    kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
+    kwargs = {'num_workers': 4, 'pin_memory': True} if use_cuda else {}
 
     # ======================================================================
     #  STEP 0: Load data from the MNIST database.
