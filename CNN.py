@@ -125,7 +125,7 @@ class Model_3(nn.Module):
 
         self.features2 = nn.Sequential(
             nn.Linear(40*18*18, hidden_size),
-            nn.ReLU(),
+            nn.ReLU6(),
             nn.Linear(hidden_size, 10)
         )
 
@@ -247,10 +247,10 @@ class Net(nn.Module):
         # ======================================================================
         # Define softmax layer, use the features.
         
-        soft = nn.LogSoftmax(dim=1)
+        soft = nn.Softmax(dim=1)
 
-
-        # Remove NotImplementedError and assign calculated value to logits after code implementation.
         logits = soft(x)
         return logits
+        
+        # Remove NotImplementedError and assign calculated value to logits after code implementation.
 

@@ -146,6 +146,8 @@ def main():
         ])),
         batch_size=args.test_batch_size, shuffle=True, **kwargs)
 
+    print(args.lr)
+
     # ======================================================================
     #  STEP 1: Train a baseline model.
     #  This trains a feed forward neural network with one hidden layer.
